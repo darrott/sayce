@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css">
+    <title>Ordinazioni</title>
+</head>
+<style>
+    .container{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+    .container > form{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+    label{
+        margin-bottom: 10px;
+    }
+    input{
+        margin-bottom: 20px;
+    }
+    li>span.bi {
+        float: right;
+    }
+    #lista{
+        max-width: 310px;
+    }
+</style>
+<body>
+    <div class="container">
+        <h2>Ordinazioni</h2>
+        <h4>Ordinazioni totali: <span class="ordinazioni-totali">0</span></h4>
+        <form action="">
+            <label for="numero-piatto">Numero Piatto</label>
+            <input type="text" name="numero-piatto" id="numero-piatto" maxlength="9" required>
+            <label for="quantita-piatto">Quantità Piatto</label>
+            <input type="number" name="quantita-piatto" id="quantita-piatto" min="0" required>
+            <input type="submit" value="Aggiungi">
+        </form>
+        <ol id="lista"></ol>
+    </div>
+</body>
+<script>
+    var my_session = localStorage['my_session'];
+    if(my_session){
+        my_session = JSON.parse(my_session);
+        document.getElementById('lista').outerHTML = my_session.html;
+    }
+
+    function count_lista(){
+        var numero_elementi_lista = document.getElementById('lista').getElementsByTagName('li').length;
+        $('.ordinazioni-totali').text(numero_elementi_lista);
+    }
+    function save_changes(my_session){
+        var element = document.getElementById('lista');
+        var html = element.outerHTML;
+        var data = { html: html }; 
+        localStorage['my_session'] = JSON.stringify(data);
+    }
+    $('form').on('submit', function(e){
+        e.preventDefault();
+        var numero = $('#numero-piatto').val().replaceAll(' ', '');
+        var quantita = $('#quantita-piatto').val().replaceAll(' ', '');
+        if($('li[piatto="'+numero+'"]').length){
+            $('li[piatto="'+numero+'"]').attr('quantita', quantita);
+            $('li[piatto="'+numero+'"]').html("Piatto N "+numero+" - Quantità "+quantita+" <i class='bi bi-pencil'></i> <i class='bi bi-trash'></i>")
+        }
+        else {
+            $('ol#lista').append("<li piatto='"+numero+"' quantita='"+quantita+"'>Piatto N "+numero+" - Quantità "+quantita+" <i class='bi bi-pencil'></i> <i class='bi bi-trash'></i></li>");
+        }
+        count_lista();
+        save_changes(my_session);
+    })
+    $('body').on('click', '.bi-trash', function(e){
+        e.preventDefault();
+        if(confirm("Sei sicuro di volerlo eliminare?")){
+            e.currentTarget.closest('li').remove();
+            count_lista();
+            save_changes(my_session);
+        }
+    })
+    var last = '';
+    $('body').on('click', '.bi-pencil', function(e){
+        e.preventDefault();
+        var numero = e.currentTarget.closest('li').getAttribute('piatto');
+        var quantita = e.currentTarget.closest('li').getAttribute('quantita');
+        $('input#numero-piatto').val(numero);
+        $('input#quantita-piatto').val(quantita);
+        last = e.currentTarget.closest('li');
+    })
+    document.getElementById('quantita-piatto').oninput = function () {
+        if (this.value.length > 9) {
+            this.value = this.value.slice(0,9); 
+        }
+    }
+</script>
+</html>
