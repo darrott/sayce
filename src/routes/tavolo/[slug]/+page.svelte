@@ -3,6 +3,7 @@
   import './style.css';
   import user from '$lib/shared/stores/user';
   import piatti from '$lib/shared/stores/piatti';
+  import { toast } from "@zerodevx/svelte-toast";
 
   $: piattiStore = $piatti
 
@@ -34,7 +35,11 @@
   }
 
   function inserisciPiatto(){
-    if(tempQuaPiatto == 0 && tempNumPiatto != "") return;
+    if(tempQuaPiatto == 0 || tempNumPiatto == ""){
+      if(tempNumPiatto == "") toast.push("Numero piatto non puo' essere vuoto");
+      if(tempQuaPiatto == 0) toast.push("Quantita piatto non puo' essere 0");
+      return;
+    } 
     let found = false;
     piattiLocal.map((value) => {
       if(value.numero === tempNumPiatto){
@@ -49,7 +54,10 @@
     }
     setTempQuaPiatto(0);
     setTempNumPiatto("");
-    console.log(piattiLocal);
+    updatePiattiStorage();
+  }
+
+  function updatePiattiStorage(){
     let tempPiatti = piatti;
     tempPiatti[tableId] = piattiLocal;
     piatti.set(tempPiatti);
@@ -58,6 +66,7 @@
   function rimuoviPiatto(numeroPiatto){
     let piattiLocalNew = piattiLocal.filter(piatto => piatto.numero !== numeroPiatto);
     piattiLocal = piattiLocalNew;
+    updatePiattiStorage(); 
   }
 
   function modificaPiatto(numeroPiatto, quantitaPiatto){
@@ -96,13 +105,13 @@
   </form>
   {#if piattiLocal.length > 0}
   <div class="totale-prenotazione-personale">
-    <h4>Piatti:</h4>
+    <h4>Totale Piatti: {piattiLocal.length > 0 ? piattiLocal.length : ''}</h4>
     <ul>
     {#each piattiLocal as piatto}
       <li>
         N. {piatto.numero} - Quantita {piatto.quantita} 
-        <button on:click={() => rimuoviPiatto(piatto.numero)}>Del</button>
-        <button on:click={() => modificaPiatto(piatto.numero, piatto.quantita)}>Mod</button>
+        <span on:click={() => rimuoviPiatto(piatto.numero)} class="material-symbols-outlined">delete</span>
+        <span on:click={() => modificaPiatto(piatto.numero, piatto.quantita)} class="material-symbols-outlined">edit</span>
       </li>
     {/each}
     </ul>
