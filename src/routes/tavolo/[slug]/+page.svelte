@@ -9,6 +9,26 @@
 
   const tableId = $page.params.slug;
 
+  async function saveUser() {
+    console.log('table', tableId);
+    console.log('username', userName);
+    const res = await fetch("http://localhost:3000/table/user/insert", {
+      method: "POST",
+      body: JSON.stringify({
+        tableId: tableId,
+        username: userName,
+      })
+    })
+
+    const json = await res.json();
+    if(json.state != "error" ){
+      console.log('fatto')
+    }
+    else {
+      console.log('errore')
+    }
+  }
+
   let tempUsername = "";
   let tempNumPiatto = "";
   let tempQuaPiatto = 0;
@@ -76,7 +96,10 @@
 
   $: userName = $user;
 
-
+  function salvaUtente(tempUsername){
+    user.set(tempUsername);
+    saveUser();
+  }
 
   
 </script>
@@ -84,7 +107,7 @@
 {#if userName === 'user' || userName === ""}
   <h3>Come ti chiami?</h3>
   <input type='text' id='username' bind:value={tempUsername} placeholder="Il tuo nome" autocomplete="off"/>
-  <button on:click={() => ( tempUsername != '' ? user.set(tempUsername) : user.set(''))}>Salva</button>
+  <button on:click={() => ( tempUsername != '' ? salvaUtente(tempUsername) : user.set(''))}>Salva</button>
 {:else}
   <h3>Ciao {userName}</h3>
   <h4>Cosa vuoi ordinare?</h4>

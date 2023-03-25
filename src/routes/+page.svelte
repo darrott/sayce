@@ -1,6 +1,15 @@
 <script>
-  function generaTavolo(){
+  let result = null;
 
+  async function generaTavolo(){
+    const res = await fetch("http://localhost:3000/table/create", {
+      method: "POST",
+    });
+
+    const json = await res.json();
+    if(json){
+      window.location.href = "/tavolo/" + json.uuid;
+    }
   }
 </script>
 
