@@ -96,9 +96,9 @@
     <div class="label-buttons">
       <label for="quantita-piatto">Quantita Piatto</label>
       <div>
-        <button on:click={() => decrementaQuantita()}>-</button>
+        <span class="material-symbols-outlined" on:click={() => decrementaQuantita()}>remove</span>
         <span>{tempQuaPiatto}</span>
-        <button on:click={() => incrementaQuantita()}>+</button>
+        <span class="material-symbols-outlined" on:click={() => incrementaQuantita()}>add</span>
       </div>
     </div>
     <button on:click={() => inserisciPiatto()}>Inserisci</button>
