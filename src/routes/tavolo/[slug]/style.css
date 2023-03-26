@@ -1,6 +1,8 @@
 div.label-input {
 	display: flex;
 	flex-direction: column;
+	flex-wrap: wrap;
+	align-content: center;
 }
 
 div.label-input input {
@@ -12,9 +14,23 @@ div.label-input label {
 	margin-bottom: 10px;
 }
 
+button {
+	display: block;
+	margin: 0 auto;
+}
+
+ul {
+	display: flex;
+	flex-wrap: wrap;
+	flex-direction: column;
+	align-content: center;
+}
+
 div.label-buttons {
 	display: flex;
 	flex-direction: column;
+	flex-wrap: wrap;
+	align-content: center;
 }
 
 div.label-buttons div {

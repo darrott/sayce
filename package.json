@@ -33,6 +33,9 @@
 	"type": "module",
 	"dependencies": {
 		"cors": "^2.8.5",
-		"express": "^4.18.2"
+		"express": "^4.18.2",
+		"socket.io": "^4.6.1",
+		"socket.io-client": "^4.6.1",
+		"svelte-simple-modal": "^1.5.2"
 	}
 }

@@ -1,16 +1,16 @@
 import { browser } from '$app/environment';
 import { writable } from 'svelte/store';
 
-const defaultValue = 'user';
+const defaultValue = '{"username": "", "uuid": ""}';
 const initialValue = browser
-  ? window.localStorage.getItem('username') ?? defaultValue
+  ? JSON.parse(window.localStorage.getItem('userdata') ?? defaultValue)
   : defaultValue;
 
 const username = writable(initialValue);
 
 username.subscribe((value) => {
   if (browser) {
-    window.localStorage.setItem('username', value);
+    window.localStorage.setItem('userdata', JSON.stringify(value));
   }
 });
 

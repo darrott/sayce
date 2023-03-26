@@ -1,33 +1,131 @@
 <script>
   import { page } from '$app/stores';
+  import { browser } from "$app/environment";
   import './style.css';
   import user from '$lib/shared/stores/user';
   import piatti from '$lib/shared/stores/piatti';
   import { toast } from "@zerodevx/svelte-toast";
+  import { getContext } from 'svelte';
+  import Popup from '../../../components/popup/popup.svelte'
+  const { open } = getContext('simple-modal');
+  const showPopup = () => open(Popup, { totaleOrdinazioneTavolo: totaleOrdinazioneTavolo })
+  import io from "socket.io-client"
+  if(browser){
+    const socket = io('http://localhost:3000', {
+      query: { roomId: $page.params.slug }
+    });
+    socket.on('nuovo-partecipante', (data) => {
+      whoIsAtTable().then((value) => chiSedutoAlTavolo = value);
+    })
+  }
 
+  
+
+  $: userName = $user.username;
+  $: userUUID = $user.uuid;
   $: piattiStore = $piatti
 
-  const tableId = $page.params.slug;
+  let tableId;
+
+  if (browser) {
+    tableId = $page.params.slug;
+    console.log('Username', userName);
+    if (userName != "" && userName != undefined){
+      saveUser();
+    }
+  }
+
 
   async function saveUser() {
-    console.log('table', tableId);
-    console.log('username', userName);
     const res = await fetch("http://localhost:3000/table/user/insert", {
-      method: "POST",
+      method: "post",
+      headers: {
+        "Content-Type": "application/json",
+      },
       body: JSON.stringify({
-        tableId: tableId,
-        username: userName,
+        "tableId": tableId,
+        "username": $user,
       })
     })
 
     const json = await res.json();
     if(json.state != "error" ){
       console.log('fatto')
+      let tempUserData = $user;
+      tempUserData.uuid = json.data.userUUID;
+      user.set(tempUserData);
     }
     else {
       console.log('errore')
     }
   }
+
+  async function saveOrdinazione(){
+    const res = await fetch('http://localhost:3000/table/user/updateCart', {
+      method: "post",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ "piatti": $piatti[tableId], "tableId": tableId, "userUUID": $user.uuid}),
+    });
+
+    const json = await res.json();
+    console.log(json);
+  }
+
+  let chiSedutoAlTavolo;
+  if(browser){
+    whoIsAtTable().then((value) => chiSedutoAlTavolo = value);
+  }
+
+  async function whoIsAtTable(){
+    const res = await fetch('http://localhost:3000/table/seated', {
+      method: "post",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ tableId: tableId }),
+    });
+
+    const json = await res.json();
+    console.log(json.data);
+    return json.data;
+  }
+
+  let totaleOrdinazioneTavolo;
+
+  async function getTotalTavolo(){
+    const res = await fetch("http://localhost:3000/table/getTotal", {
+      method: "post",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ "tableId": tableId }),
+    });
+
+    const json = await res.json();
+    let array = [];
+    let totaleOrdinazione;
+    json.data.forEach((ordinazione) => {
+      array.push(ordinazione.ordinazione)
+    })
+    array = array.toString().replaceAll('[', '').replaceAll(']','');
+    array = ['['+array+']'];
+    totaleOrdinazione = raggruppaPerNumero(JSON.parse(array));
+    totaleOrdinazioneTavolo = totaleOrdinazione;
+    showPopup();
+  }
+
+  function raggruppaPerNumero(arr) {
+    return Object.values(arr.reduce((acc, cur) => {
+      if (!acc[cur.numero]) {
+        acc[cur.numero] = { numero: cur.numero, quantita: 0 };
+      }
+      acc[cur.numero].quantita += cur.quantita;
+      return acc;
+    }, {}));
+  }
+
 
   let tempUsername = "";
   let tempNumPiatto = "";
@@ -81,6 +179,7 @@
     let tempPiatti = piatti;
     tempPiatti[tableId] = piattiLocal;
     piatti.set(tempPiatti);
+    saveOrdinazione();
   }
 
   function rimuoviPiatto(numeroPiatto){
@@ -94,13 +193,29 @@
     setTempQuaPiatto(quantitaPiatto);
   }
 
-  $: userName = $user;
 
   function salvaUtente(tempUsername){
-    user.set(tempUsername);
+    let tempUserData = $user;
+    tempUserData.username = tempUsername;
+    user.set(tempUserData);
     saveUser();
   }
 
+  function shareTable(){
+    if(navigator.share){
+      navigator.share({
+        title: 'Sayce, mangiare in compagnia',
+        text: 'Inizia a scegliere i tuoi piatti!',
+        url: $page.path,
+      })
+      .then(() => console.log('Shared!'))
+      .catch((error) => console.log('Error: ', error))
+    }
+    else {
+      navigator.clipboard.writeText($page.path);
+      toast.push('Link copiato!');
+    }
+  }
   
 </script>
 
@@ -110,7 +225,19 @@
   <button on:click={() => ( tempUsername != '' ? salvaUtente(tempUsername) : user.set(''))}>Salva</button>
 {:else}
   <h3>Ciao {userName}</h3>
-  <h4>Cosa vuoi ordinare?</h4>
+  <button on:click={() => shareTable()}>Condividi</button>
+  {#if chiSedutoAlTavolo != null}
+    <h4>Seduti al tavolo:</h4>
+      <div style="display: flex; flex-direction: row; justify-content: space-evenly; gap: 10px; flex-wrap: wrap;">
+      {#each chiSedutoAlTavolo as item } 
+        <div style="display: flex; flex-direction: column; justify-content: center; align-items: center;">
+          <span class="material-symbols-outlined">account_circle</span>
+          <span>{item.username}</span>
+        </div>
+      {/each}
+    </div>
+  {/if}
+  <h3>Cosa vuoi ordinare?</h3>
   <form>
     <div class="label-input">
       <label for="numero-piatto">Numero Piatto</label>
@@ -140,6 +267,8 @@
     </ul>
   </div>
   {/if}
+  <br />
+  <button on:click={() => getTotalTavolo()}>Totali</button>
 {/if}
 
 
