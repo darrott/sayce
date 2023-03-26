@@ -10,7 +10,7 @@ module.exports = {
 		},
 		{
 			name: 'sayce backend',
-			script: 'node backend/index.js'
+			script: 'cd backend && npm run start'
 		}
 	]
 };
