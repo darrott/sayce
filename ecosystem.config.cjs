@@ -1,6 +1,5 @@
 module.exports = {
 	apps: [
-		// First application
 		{
 			name: 'sayce',
 			script: 'build/index.js',
@@ -8,6 +7,10 @@ module.exports = {
 				NODE_ENV: 'production',
 				PORT: 5173
 			}
+		},
+		{
+			name: 'sayce backend',
+			script: 'node backend/index.js'
 		}
 	]
 };
