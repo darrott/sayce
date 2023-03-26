@@ -11,7 +11,7 @@
   const showPopup = () => open(Popup, { totaleOrdinazioneTavolo: totaleOrdinazioneTavolo })
   import io from "socket.io-client"
   if(browser){
-    const socket = io('http://localhost:3000', {
+    const socket = io('http://localhost:3001', {
       query: { roomId: $page.params.slug }
     });
     socket.on('nuovo-partecipante', (data) => {
@@ -37,7 +37,7 @@
 
 
   async function saveUser() {
-    const res = await fetch("http://localhost:3000/table/user/insert", {
+    const res = await fetch("http://localhost:3001/table/user/insert", {
       method: "post",
       headers: {
         "Content-Type": "application/json",
@@ -61,7 +61,7 @@
   }
 
   async function saveOrdinazione(){
-    const res = await fetch('http://localhost:3000/table/user/updateCart', {
+    const res = await fetch('http://localhost:3001/table/user/updateCart', {
       method: "post",
       headers: {
         "Content-Type": "application/json",
@@ -79,7 +79,7 @@
   }
 
   async function whoIsAtTable(){
-    const res = await fetch('http://localhost:3000/table/seated', {
+    const res = await fetch('http://localhost:3001/table/seated', {
       method: "post",
       headers: {
         "Content-Type": "application/json",
@@ -95,7 +95,7 @@
   let totaleOrdinazioneTavolo;
 
   async function getTotalTavolo(){
-    const res = await fetch("http://localhost:3000/table/getTotal", {
+    const res = await fetch("http://localhost:3001/table/getTotal", {
       method: "post",
       headers: {
         "Content-Type": "application/json",

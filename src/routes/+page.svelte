@@ -1,6 +1,6 @@
 <script>
   async function generaTavolo(){
-    const res = await fetch("http://localhost:3000/table/create", {
+    const res = await fetch("http://localhost:3001/table/create", {
       method: "POST",
     });
 
