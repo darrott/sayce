@@ -1,6 +1,7 @@
 <script>
+  import { env } from "$env/dynamic/public";
   async function generaTavolo(){
-    const res = await fetch("http://localhost:3001/table/create", {
+    const res = await fetch(`http://${env.PUBLIC_WEBSITE_ADDRESS}/table/create`, {
       method: "POST",
     });
 
