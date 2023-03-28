@@ -2,7 +2,7 @@ module.exports = {
 	apps: [
 		{
 			name: 'sayce',
-			script: 'build/index.js',
+			script: 'node -r dotenv/config build',
 			env_production: {
 				NODE_ENV: 'production',
 				PORT: 5173
