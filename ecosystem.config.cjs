@@ -9,7 +9,7 @@ module.exports = {
 			}
 		},
 		{
-			name: 'sayce backend',
+			name: 'sayceback',
 			script: 'cd backend && npm run start'
 		}
 	]
