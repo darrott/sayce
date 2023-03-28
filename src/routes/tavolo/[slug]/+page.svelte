@@ -10,12 +10,12 @@
   const { open } = getContext('simple-modal');
   const showPopup = () => open(Popup, { totaleOrdinazioneTavolo: totaleOrdinazioneTavolo })
   import io from "socket.io-client"
-  import { env } from "$env/static/public";
-  console.log(env)
+  import dotenv from 'dotenv'
+  dotenv.config();
 
   console.log(process.env);
   if(browser){
-    const socket = io(`http://${env.PUBLIC_WEBSITE_ADDRESS}`, {
+    const socket = io(`http://${process.env['PUBLIC_WEBSITE_ADDRESS']}`, {
       query: { roomId: $page.params.slug }
     });
     socket.on('nuovo-partecipante', (data) => {
