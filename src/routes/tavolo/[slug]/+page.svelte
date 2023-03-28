@@ -10,7 +10,7 @@
   const { open } = getContext('simple-modal');
   const showPopup = () => open(Popup, { totaleOrdinazioneTavolo: totaleOrdinazioneTavolo })
   import io from "socket.io-client"
-  import { env } from "$env/dynamic/public";
+  import { env } from "$env/static/public";
   console.log(env)
 
   console.log(process.env);
