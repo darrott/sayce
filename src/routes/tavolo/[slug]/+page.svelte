@@ -15,7 +15,7 @@
 
   console.log(process.env);
   if(browser){
-    const socket = io('http://${env.PUBLIC_WEBSITE_ADDRESS}', {
+    const socket = io(`http://${env.PUBLIC_WEBSITE_ADDRESS}`, {
       query: { roomId: $page.params.slug }
     });
     socket.on('nuovo-partecipante', (data) => {
