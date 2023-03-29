@@ -19,9 +19,12 @@ div.label-input label {
 	margin-bottom: 10px;
 }
 
-button {
-	display: block;
-	margin: 0 auto;
+div.bottone-condividi,
+div.bottone-totali,
+div.bottone-inserisci {
+	display: flex;
+	align-items: center;
+	justify-content: center;
 }
 
 ul {

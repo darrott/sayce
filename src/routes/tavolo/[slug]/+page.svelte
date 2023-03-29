@@ -228,7 +228,9 @@
   </div>
 {:else}
   <h3>Ciao {userName}</h3>
-  <button on:click={() => shareTable()}>Condividi</button>
+  <div class="bottone-condividi">
+    <button on:click={() => shareTable()}>Condividi</button>
+  </div>
   {#if chiSedutoAlTavolo != null}
     <h4>Seduti al tavolo:</h4>
     <div style="display: flex; flex-direction: row; justify-content: space-evenly; gap: 10px; flex-wrap: wrap;">
@@ -254,10 +256,12 @@
         <span class="material-symbols-outlined tasto-piu" on:click={() => incrementaQuantita()}>add</span>
       </div>
     </div>
-    <button on:click={() => inserisciPiatto()}>Inserisci</button>
+    <div class="bottone-inserisci">
+      <button on:click={() => inserisciPiatto()}>Inserisci</button>
+    </div>
   </form>
   {#if piattiLocal.length > 0}
-  <div class="separator"></div>
+    <div class="separator"></div>
     <div class="totale-prenotazione-personale">
       <h4>Totale Piatti: {piattiLocal.length > 0 ? piattiLocal.length : ''}</h4>
       <ul>
@@ -273,7 +277,9 @@
   {/if}
   <br />
   <div class="separator"></div>
-  <button on:click={() => getTotalTavolo()}>Mostra Totali</button>
+  <div class="bottone-totali">
+    <button on:click={() => getTotalTavolo()}>Mostra Totali</button>
+  </div>
   <br />
 {/if}
 
