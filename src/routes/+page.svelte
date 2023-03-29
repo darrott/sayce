@@ -1,6 +1,6 @@
 <script>
   async function generaTavolo(){
-    const res = await fetch(`https://sayce.ottabit.com/api/table/create`, {
+    const res = await fetch(`http://localhost/table/create`, {
       method: "POST",
     });
 
