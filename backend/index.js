@@ -2,7 +2,6 @@ const express = require('express');
 const app = express();
 const cors = require('cors');
 const http = require('http');
-const https = require('https');
 require('dotenv').config();
 
 app.use(
@@ -13,16 +12,15 @@ app.use(
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 
-const server = https.createServer(app);
+const server = http.createServer(app);
 const socketIO = require('socket.io');
 const io = socketIO(server, {
+	path: '/api',
 	cors: {
 		origin: '*',
 		methods: ['GET', 'POST']
 	}
 });
-
-const { v4: uuidv4 } = require('uuid');
 
 const mysql = require('mysql');
 const connection = mysql.createPool({

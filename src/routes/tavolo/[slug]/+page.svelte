@@ -12,7 +12,8 @@
   import io from "socket.io-client"
 
   if(browser){
-    const socket = io(`https://sayce.ottabit.com/api`, {
+    const socket = io(`https://sayce.ottabit.com`, {
+      path: '/api',
       query: { roomId: $page.params.slug }
     });
     socket.on('nuovo-partecipante', (data) => {
