@@ -10,8 +10,7 @@
   const { open } = getContext('simple-modal');
   const showPopup = () => open(Popup, { totaleOrdinazioneTavolo: totaleOrdinazioneTavolo })
   import io from "socket.io-client"
-  import dotenv from 'dotenv'
-  dotenv.config();
+  import 'dotenv/config'
 
   console.log(process.env);
   if(browser){
