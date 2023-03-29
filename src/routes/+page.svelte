@@ -1,6 +1,7 @@
 <script>
   import dotenv from 'dotenv';
   dotenv.config();
+  console.log('dio', process.env);
   async function generaTavolo(){
     const res = await fetch(`http://${process.env['PUBLIC_WEBSITE_ADDRESS']}/table/create`, {
       method: "POST",
