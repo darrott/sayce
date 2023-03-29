@@ -11,7 +11,6 @@
   const showPopup = () => open(Popup, { totaleOrdinazioneTavolo: totaleOrdinazioneTavolo })
   import io from "socket.io-client"
 
-  console.log(process.env);
   if(browser){
     const socket = io(`http://204.216.214.223:3001/`, {
       query: { roomId: $page.params.slug }
