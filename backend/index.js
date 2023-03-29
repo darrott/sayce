@@ -15,7 +15,6 @@ app.use(express.json());
 const server = http.createServer(app);
 const socketIO = require('socket.io');
 const io = socketIO(server, {
-	path: '/api/socket.io',
 	cors: {
 		origin: '*',
 		methods: ['GET', 'POST']
