@@ -50,7 +50,7 @@ app.get('/api', async (req, res) => {
 	res.send('Attivo');
 });
 
-app.post('/table/create', async (req, res) => {
+app.post('/api/table/create', async (req, res) => {
 	try {
 		connection.query('INSERT INTO tavoli (uuid) VALUE (UUID())', (error, results, fields) => {
 			if (error) {
@@ -73,7 +73,7 @@ app.post('/table/create', async (req, res) => {
 	}
 });
 
-app.post('/table/user/insert', (req, res) => {
+app.post('/api/table/user/insert', (req, res) => {
 	let tableId = req.body.tableId;
 	let username = req.body.username.username;
 	let uuid = req.body.username.uuid;
@@ -106,7 +106,7 @@ app.post('/table/user/insert', (req, res) => {
 	}
 });
 
-app.post('/table/user/updateCart', (req, res) => {
+app.post('/api/table/user/updateCart', (req, res) => {
 	let piatti = JSON.stringify(req.body.piatti);
 	let tableId = req.body.tableId;
 	let userUUID = req.body.userUUID;
@@ -126,7 +126,7 @@ app.post('/table/user/updateCart', (req, res) => {
 	}
 });
 
-app.post('/table/user/getCart', (req, res) => {
+app.post('/api/table/user/getCart', (req, res) => {
 	let tableId = req.body.tableId;
 	let userUUID = req.body.userUUID;
 	try {
@@ -145,7 +145,7 @@ app.post('/table/user/getCart', (req, res) => {
 	}
 });
 
-app.post('/table/getTotal', (req, res) => {
+app.post('/api/table/getTotal', (req, res) => {
 	let tableId = req.body.tableId;
 	try {
 		connection.query(
@@ -163,7 +163,7 @@ app.post('/table/getTotal', (req, res) => {
 	}
 });
 
-app.post('/table/seated', (req, res) => {
+app.post('/api/table/seated', (req, res) => {
 	let tableId = req.body.tableId;
 	try {
 		connection.query(
