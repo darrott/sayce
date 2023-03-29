@@ -15,12 +15,13 @@ app.use(express.json());
 const server = http.createServer(app);
 const socketIO = require('socket.io');
 const io = socketIO(server, {
-	path: '/api',
+	path: '/api/socket.io',
 	cors: {
 		origin: '*',
 		methods: ['GET', 'POST']
 	}
 });
+const nsp = io.of('/api/frontend');
 
 const mysql = require('mysql');
 const connection = mysql.createPool({

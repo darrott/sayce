@@ -13,7 +13,7 @@
 
   if(browser){
     const socket = io(`https://sayce.ottabit.com`, {
-      path: '/api',
+      path: '/api/socket.io',
       query: { roomId: $page.params.slug }
     });
     socket.on('nuovo-partecipante', (data) => {
