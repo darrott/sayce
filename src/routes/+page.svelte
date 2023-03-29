@@ -5,11 +5,11 @@
     });
 
     const json = await res.json();
-    console.log(json)
     if(json){
       window.location.href = "/tavolo/" + json.uuid;
     }
   }
+  import './style.css'
 </script>
 
 <h2>Benvenuto su Sayce</h2>

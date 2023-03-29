@@ -222,14 +222,16 @@
 
 {#if userName === 'user' || userName === ""}
   <h3>Come ti chiami?</h3>
-  <input type='text' id='username' bind:value={tempUsername} placeholder="Il tuo nome" autocomplete="off"/>
-  <button on:click={() => ( tempUsername != '' ? salvaUtente(tempUsername) : user.set(''))}>Salva</button>
+  <div class="inserisci-nome">
+    <input type='text' id='username' bind:value={tempUsername} placeholder="Il tuo nome" autocomplete="off"/>
+    <button on:click={() => ( tempUsername != '' ? salvaUtente(tempUsername) : user.set(''))}>Salva</button>
+  </div>
 {:else}
   <h3>Ciao {userName}</h3>
   <button on:click={() => shareTable()}>Condividi</button>
   {#if chiSedutoAlTavolo != null}
     <h4>Seduti al tavolo:</h4>
-      <div style="display: flex; flex-direction: row; justify-content: space-evenly; gap: 10px; flex-wrap: wrap;">
+    <div style="display: flex; flex-direction: row; justify-content: space-evenly; gap: 10px; flex-wrap: wrap;">
       {#each chiSedutoAlTavolo as item } 
         <div style="display: flex; flex-direction: column; justify-content: center; align-items: center;">
           <span class="material-symbols-outlined">account_circle</span>
@@ -240,36 +242,39 @@
   {/if}
   <h3>Cosa vuoi ordinare?</h3>
   <form>
-    <div class="label-input">
+    <div class="label-input form-div">
       <label for="numero-piatto">Numero Piatto</label>
       <input type="text" placeholder="Numero piatto" bind:value={tempNumPiatto}/>
     </div>
-    <div class="label-buttons">
+    <div class="label-buttons form-div">
       <label for="quantita-piatto">Quantita Piatto</label>
       <div>
-        <span class="material-symbols-outlined" on:click={() => decrementaQuantita()}>remove</span>
+        <span class="material-symbols-outlined tasto-meno" on:click={() => decrementaQuantita()}>remove</span>
         <span>{tempQuaPiatto}</span>
-        <span class="material-symbols-outlined" on:click={() => incrementaQuantita()}>add</span>
+        <span class="material-symbols-outlined tasto-piu" on:click={() => incrementaQuantita()}>add</span>
       </div>
     </div>
     <button on:click={() => inserisciPiatto()}>Inserisci</button>
   </form>
   {#if piattiLocal.length > 0}
-  <div class="totale-prenotazione-personale">
-    <h4>Totale Piatti: {piattiLocal.length > 0 ? piattiLocal.length : ''}</h4>
-    <ul>
-    {#each piattiLocal as piatto}
-      <li>
-        N. {piatto.numero} - Quantita {piatto.quantita} 
-        <span on:click={() => rimuoviPiatto(piatto.numero)} class="material-symbols-outlined">delete</span>
-        <span on:click={() => modificaPiatto(piatto.numero, piatto.quantita)} class="material-symbols-outlined">edit</span>
-      </li>
-    {/each}
-    </ul>
-  </div>
+  <div class="separator"></div>
+    <div class="totale-prenotazione-personale">
+      <h4>Totale Piatti: {piattiLocal.length > 0 ? piattiLocal.length : ''}</h4>
+      <ul>
+        {#each piattiLocal as piatto}
+          <li>
+            N. {piatto.numero} - Quantita {piatto.quantita} 
+            <span on:click={() => rimuoviPiatto(piatto.numero)} class="material-symbols-outlined">delete</span>
+            <span on:click={() => modificaPiatto(piatto.numero, piatto.quantita)} class="material-symbols-outlined">edit</span>
+          </li>
+        {/each}
+      </ul>
+    </div>
   {/if}
   <br />
-  <button on:click={() => getTotalTavolo()}>Totali</button>
+  <div class="separator"></div>
+  <button on:click={() => getTotalTavolo()}>Mostra Totali</button>
+  <br />
 {/if}
 
 

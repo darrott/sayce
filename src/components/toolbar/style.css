@@ -1,0 +1,12 @@
+div.toolbar {
+	width: 100%;
+	display: inline-flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	align-items: center;
+	justify-content: space-evenly;
+}
+
+div.toolbar span img {
+	width: 50px;
+}
