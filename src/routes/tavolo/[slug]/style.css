@@ -87,9 +87,13 @@ div.inserisci-nome {
 }
 
 div.separator {
-	border-bottom: 1px solid #d4d4d4;
+	border-bottom: 1px solid #a9a9a9;
 	margin-top: 10px;
 	margin-bottom: 20px;
+	width: 80%;
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
 }
 
 span.tasto-meno {

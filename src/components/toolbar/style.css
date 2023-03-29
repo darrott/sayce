@@ -1,10 +1,14 @@
 div.toolbar {
+	height: 60px;
 	width: 100%;
 	display: inline-flex;
 	flex-direction: row;
 	flex-wrap: wrap;
 	align-items: center;
 	justify-content: space-evenly;
+	position: fixed;
+	bottom: 0;
+	background: #ffe680;
 }
 
 div.toolbar span img {
