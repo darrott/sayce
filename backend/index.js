@@ -79,8 +79,14 @@ app.post('/api/table/user/insert', (req, res) => {
 	try {
 		let query =
 			uuid != '' && uuid != 'undefined'
-				? `INSERT INTO tavolo (tavolo, username, userUUID) VALUES ('${tableId}', '${username}', '${uuid}')`
+				? `INSERT INTO tavolo (tavolo, username, userUUID) SELECT '${tableId}' as tavolo, '${username}' as username, '${uuid}' as userUUID FROM DUAL WHERE NOT EXISTS ( SELECT userUUID FROM tavolo WHERE tavolo = '${tableId}') LIMIT 1`
 				: `INSERT INTO tavolo (tavolo, username, userUUID) VALUES ('${tableId}', '${username}', UUID())`;
+		/*
+    let query =
+      uuid != '' && uuid != 'undefined'
+        ? `INSERT INTO tavolo (tavolo, username, userUUID) VALUES ('${tableId}', '${username}', '${uuid}')`
+        : `INSERT INTO tavolo (tavolo, username, userUUID) VALUES ('${tableId}', '${username}', UUID())`;
+    */
 		connection.query(query, (error, results, fields) => {
 			if (error) {
 				res.send({ state: 'Could not insert USER into DB', data: error });
