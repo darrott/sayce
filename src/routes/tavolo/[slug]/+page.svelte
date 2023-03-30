@@ -31,7 +31,7 @@
   if (browser) {
     tableId = $page.params.slug;
     console.log('Username', userName);
-    if (userName != "" && userName != undefined){
+    if ($user.username != "" && $user.username != undefined){
       saveUser();
     }
   }
