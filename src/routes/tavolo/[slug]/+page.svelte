@@ -12,6 +12,7 @@
   import io from "socket.io-client"
 
   if(browser){
+    console.log('page', $page.url.href);
     const socket = io(`https://sayce.ottabit.com`, {
       query: { roomId: $page.params.slug }
     });
@@ -207,7 +208,7 @@
       navigator.share({
         title: 'Sayce, mangiare in compagnia',
         text: 'Inizia a scegliere i tuoi piatti!',
-        url: $page.path,
+        url: $page.url.href,
       })
       .then(() => console.log('Shared!'))
       .catch((error) => console.log('Error: ', error))
