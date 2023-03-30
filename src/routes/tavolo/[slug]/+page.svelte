@@ -28,6 +28,7 @@
   $: piattiStore = $piatti
 
   let tableId;
+  let chiSedutoAlTavolo;
 
   if (browser) {
     tableId = $page.params.slug;
@@ -35,6 +36,7 @@
     if ($user.username != "" && $user.username != undefined){
       saveUser();
     }
+    whoIsAtTable().then((value) => chiSedutoAlTavolo = value);
   }
 
 
@@ -75,10 +77,6 @@
     console.log(json);
   }
 
-  let chiSedutoAlTavolo;
-  if(browser){
-    whoIsAtTable().then((value) => chiSedutoAlTavolo = value);
-  }
 
   async function whoIsAtTable(){
     const res = await fetch(`https://sayce.ottabit.com/api/table/seated`, {
